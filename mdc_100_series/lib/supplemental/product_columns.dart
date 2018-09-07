@@ -34,12 +34,13 @@ class TwoProductCardColumn extends StatelessWidget {
       double heightOfCards = (constraints.biggest.height - spacerHeight) / 2.0;
       double heightOfImages = heightOfCards - ProductCard.kTextBoxHeight;
       // TODO: Change imageAspectRatio calculation (104)
-      double imageAspectRatio = constraints.biggest.width / heightOfImages;
+      double imageAspectRatio =
+          (heightOfImages >= 0.0 && constraints.biggest.width > heightOfImages)
+              ? constraints.biggest.width / heightOfImages
+              : 33 / 49;
 
       // TODO: Replace Column with a ListView (104)
-      return Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
+      return ListView(
         children: <Widget>[
           Padding(
             padding: EdgeInsetsDirectional.only(start: 28.0),
@@ -52,14 +53,16 @@ class TwoProductCardColumn extends StatelessWidget {
                     height: heightOfCards,
                   ),
           ),
-          SizedBox(height: spacerHeight),
+          SizedBox(
+            height: spacerHeight,
+          ),
           Padding(
             padding: EdgeInsetsDirectional.only(end: 28.0),
             child: ProductCard(
               imageAspectRatio: imageAspectRatio,
               product: bottom,
             ),
-          ),
+          )
         ],
       );
     });
@@ -74,14 +77,13 @@ class OneProductCardColumn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: Replace Column with a ListView (104)
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.end,
+    return ListView(
       children: <Widget>[
-        ProductCard(
-          product: product,
-        ),
         SizedBox(
           height: 40.0,
+        ),
+        ProductCard(
+          product: product,
         ),
       ],
     );
